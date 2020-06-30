@@ -1,2 +1,5 @@
-.exe
-.o
+*.exe
+*.o
+a.cpp
+b.cpp
+*.txt
