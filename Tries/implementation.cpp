@@ -3,33 +3,43 @@ using namespace std;
 #define int long long
 const int N = 1e5 + 5, mod = 1e9 + 7;
 
-class node {
+class node
+{
 public:
 	char data;
-	unordered_map<char, node*> children;
+	unordered_map<char, node *> children;
 	bool isTerminal;
-	node(char ch) {
+	node(char ch)
+	{
 		data = ch;
 		isTerminal = false;
 	}
 };
 
-class Trie {
-	node* root;
+class Trie
+{
+	node *root;
 	int number_of_words;
+
 public:
-	Trie() {
+	Trie()
+	{
 		root = new node('\0');
 		number_of_words = 0;
 	}
 
-	void insert(string str) {
-		node* curr = root;
-		for (char ch : str) {
-			if (curr->children.count(ch)) {
+	void insert(string str)
+	{
+		node *curr = root;
+		for (char ch : str)
+		{
+			if (curr->children.count(ch))
+			{
 				curr = curr->children[ch];
-			} else {
-				node* temp = new node(ch);
+			}
+			else
+			{
+				node *temp = new node(ch);
 				curr->children[ch] = temp;
 				curr = temp;
 			}
@@ -38,18 +48,22 @@ public:
 		number_of_words++;
 	}
 
-	bool find(string str) {
-		node* curr = root;
-		for (char ch : str) {
-			if (curr->children.count(ch)) {
+	bool find(string str)
+	{
+		node *curr = root;
+		for (char ch : str)
+		{
+			if (curr->children.count(ch))
+			{
 				curr = curr->children[ch];
-			} else {
+			}
+			else
+			{
 				return false;
 			}
 		}
 		return curr->isTerminal;
 	}
-
 };
 
 int32_t main()
@@ -63,7 +77,8 @@ int32_t main()
 	vector<string> names = {"apple", "mango", "pears", "banana", "app"};
 	Trie phonebook;
 
-	for (auto str : names) {
+	for (auto str : names)
+	{
 		phonebook.insert(str);
 	}
 
@@ -78,7 +93,6 @@ int32_t main()
 	else
 		cout << "guvava not present" << endl;
 
-
-
 	return 0;
 }
+
