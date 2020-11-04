@@ -1,67 +1,76 @@
-// I am Nothing , You Are Nothing
-// Jai Shree Krishna
-
-//inversion count
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-int cross_count(vector<int> &a, int s, int mid, int e) {
-	int i = s, j = mid + 1, k = s;
-	vector<int> temp(100000);
+long long merge(vector<int> &arr, int start, int middle, int end)
+{
+	long long cross_inversions = 0;
+	int len = end - start + 1;
+	vector<int> temp(len);
+	int one = start, two = middle + 1, curr = 0;
 
-	int cnt = 0;
-	while (i <= mid && j <= e) {
-		if (a[i] > a[j]) {
-			cnt += mid - i + 1;
-			temp[k++] = a[j++];
-		} else {
-			temp[k++] = a[i++];
+	while (one <= middle and two <= end)
+	{
+		//got inversions
+		if (arr[one] > arr[two])
+		{
+			cross_inversions += middle - one + 1;
+			temp[curr++] = arr[two++];
+		}
+		else
+		{
+			temp[curr++] = arr[one++];
 		}
 	}
-	while (i <= mid) {
-		temp[k++] = a[i++];
+
+	while (one <= middle)
+	{
+		temp[curr++] = arr[one++];
 	}
-	while (j <= e) {
-		temp[k++] = a[j++];
+	while (two <= end)
+	{
+		temp[curr++] = arr[two++];
 	}
-	for (int i = s; i <= e; i++) {
-		a[i] = temp[i];
+
+	curr = start;
+	for (int i = 0; i < len; i++)
+	{
+		arr[curr++] = temp[i];
 	}
-	return cnt;
+	return cross_inversions;
 }
 
-int inversion_count(vector<int> &a, int s, int e) {
-	if (s >= e) {
+long long count_inversions(vector<int> &arr, int start, int end)
+{
+	if (start >= end)
 		return 0;
-	}
-	int mid = (s + e) / 2;
-	int x = inversion_count(a, s, mid);
-	int y = inversion_count(a, mid + 1, e);
-	int z = cross_count(a, s, mid, e);
-	return x + y + z;
+	int middle = (start + end) / 2;
+
+	long long left = count_inversions(arr, start, middle);
+	long long right = count_inversions(arr, middle + 1, end);
+	long long cross_inversions = merge(arr, start, middle, end);
+	return left + right + cross_inversions;
 }
 
-int main() {
+int main()
+{
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
 #endif
+	int test;
+	cin >> test;
 
-	int n;
-	cin >> n;
-
-	vector<int> a(n);
-	for (int i = 0; i < n; i++) {
-		cin >> a[i];
+	while (test--)
+	{
+		int n;
+		cin >> n;
+		vector<int> arr(n);
+		for (int i = 0; i < n; i++)
+		{
+			cin >> arr[i];
+		}
+		cout << count_inversions(arr, 0, n - 1) << endl;
 	}
-
-	cout << "Inversion Count:" << inversion_count(a, 0, n - 1) << endl;
-
-	for (int i = 0; i < n; i++) {
-		cout << a[i] << " ";
-	}
-	cout << endl;
 
 	return 0;
 }
-
